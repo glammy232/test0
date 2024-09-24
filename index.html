@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | UrbanClans</title>
+    <title>Unity WebGL Player | MoveToEarnTest</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=330 height=600 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -20,9 +20,10 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">UrbanClans</div>
+        <div id="unity-build-title">MoveToEarnTest</div>
       </div>
     </div>
+    <script src="Build/ZootopiaBuilds.loader.js"></script>
     <script>
 
       var container = document.querySelector("#unity-container");
@@ -57,14 +58,14 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/zBuild.loader.js";
+      var loaderUrl = buildUrl + "/ZootopiaBuilds.loader.js";
       var config = {
-        dataUrl: buildUrl + "/zBuild.data",
-        frameworkUrl: buildUrl + "/zBuild.framework.js",
-        codeUrl: buildUrl + "/zBuild.wasm",
+        dataUrl: buildUrl + "/ZootopiaBuilds.data.unityweb",
+        frameworkUrl: buildUrl + "/ZootopiaBuilds.framework.js.unityweb",
+        codeUrl: buildUrl + "/ZootopiaBuilds.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "Urban Clans LTD",
-        productName: "UrbanClans",
+        companyName: "DefaultCompany",
+        productName: "MoveToEarnTest",
         productVersion: "1.0",
         showBanner: unityShowBanner,
       };
@@ -94,7 +95,7 @@
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-        canvas.style.width = "330px";
+        canvas.style.width = "960px";
         canvas.style.height = "600px";
       }
 
@@ -106,17 +107,36 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
+                  loadingBar.style.display = "none";
+                  window.UnityInstance = unityInstance;
+                  fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
               }).catch((message) => {
                 alert(message);
-              });
+              })
             };
 
       document.body.appendChild(script);
 
     </script>
+    <script>
+      // Проверяем, поддерживается ли гироскоп
+      if (window.DeviceOrientationEvent) {
+          window.addEventListener('deviceorientation', function(event) {
+              // Получаем данные гироскопа
+              var alpha = event.alpha;
+              var beta = event.beta;
+              var gamma = event.gamma;
+
+              // Отправляем данные в Unity
+              if (typeof UnityInstance !== 'undefined') {
+                  UnityInstance.SendMessage('GyroscopeReceiver', 'OnGyroscopeData', JSON.stringify({ alpha: alpha, beta: beta, gamma: gamma }));
+              }
+          });
+      } else {
+          console.log('Гироскоп не поддерживается');
+      }
+  </script>
   </body>
 </html>
