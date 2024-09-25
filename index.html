@@ -119,20 +119,48 @@
 
       document.body.appendChild(script);
 
-    </script>
-    <script>
+    
+        let previousAccY = 0;
+        let stepCount = 0;
+
+        function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
+            // Простая логика подсчёта шагов: пик в значении accY
+            if (accY > 10 && previousAccY <= 10) {
+                stepCount++;
+                
+                sendStepCountToUnity(stepCount);
+            }
+            previousAccY = accY;
+        }
+
+        function sendStepCountToUnity(stepCount) {
+            if (window.UnityInstance/*typeof unityInstance*/ !== 'undefined') {
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount);
+            } else {
+                console.log("Unity инстанс не определен");
+            }
+        }
       // Проверяем, поддерживается ли гироскоп
-      if (window.DeviceOrientationEvent) {
-          window.addEventListener('deviceorientation', function(event) {
-              // Получаем данные гироскопа
-              var alpha = event.alpha;
-              var beta = event.beta;
-              var gamma = event.gamma;
+      if (window.DeviceMotionEvent) {
+          window.addEventListener('devicemotion', function(event) {
+
+            let acceleration = event.accelerationIncludingGravity;
+            let accX = acceleration.x;
+            let accY = acceleration.y;
+            let accZ = acceleration.z;
+
+            // Получаем данные гироскопа
+            let rotationRate = event.rotationRate;
+            let rotAlpha = rotationRate.alpha;
+            let rotBeta = rotationRate.beta;
+            let rotGamma = rotationRate.gamma;
+
+            calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma);
 
               // Отправляем данные в Unity
-              if (typeof UnityInstance !== 'undefined') {
-                  UnityInstance.SendMessage('GyroscopeReceiver', 'OnGyroscopeData', JSON.stringify({ alpha: alpha, beta: beta, gamma: gamma }));
-              }
+              //if (typeof UnityInstance !== 'undefined') {
+              //    UnityInstance.SendMessage('GyroscopeReceiver', 'OnGyroscopeData', JSON.stringify({ alpha: alpha, beta: beta, gamma: gamma }));
+              //}
           });
       } else {
           console.log('Гироскоп не поддерживается');
