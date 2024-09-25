@@ -123,10 +123,9 @@
       let alpha = 0.95; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 0.125; // Пороговое значение для определения шага
+        let threshold = 0.09; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
-        let stepInterval = 2000; // Минимальное время между шагами (в мс)
-        let canCount = false;
+        let stepInterval = 25; // Минимальное время между шагами (в мс)
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
           const { accelerationIncludingGravity } = event;
@@ -139,14 +138,12 @@
         const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
         // Простая логика подсчёта шагов: пик в значении accY
         if (/*accY > threshold && previousAccY <= threshold && */currentAccel > previousAccel + threshold) {
-            if (Date.now() - timeSinceLastStep <= stepInterval) { timeSinceLastStep = Date.now(); }
-            else canCount = true;
-
-            if(canCount == false) return;
-            
-              stepCount++;
+            if (Date.now() - timeSinceLastStep > stepInterval) {
+                stepCount++;
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
+                timeSinceLastStep = Date.now();
+              }
           }
             previousAccY = accY;
             previousAccel = currentAccel;
