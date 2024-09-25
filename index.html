@@ -122,13 +122,19 @@
     
         let previousAccY = 0;
         let stepCount = 0;
+        let threshold = 10; // Пороговое значение для определения шага
+        let timeSinceLastStep = 0;
+        let stepInterval = 300; // Минимальное время между шагами (в мс)
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
             // Простая логика подсчёта шагов: пик в значении accY
-            if (accY > 10 && previousAccY <= 10) {
-                stepCount++;
-                
-                sendStepCountToUnity(stepCount);
+            if (accY > threshold && previousAccY <= threshold) {
+                if (Date.now() - timeSinceLastStep > stepInterval) {
+                    stepCount++;
+                    console.log("Шаг: " + stepCount);
+                    sendStepCountToUnity(stepCount);
+                    timeSinceLastStep = Date.now();
+                }
             }
             previousAccY = accY;
         }
