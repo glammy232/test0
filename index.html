@@ -123,7 +123,7 @@
       let alpha = 0.95; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 5; // Пороговое значение для определения шага
+        let threshold = 10; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
         let stepInterval = 300; // Минимальное время между шагами (в мс)
 
@@ -137,16 +137,12 @@
         const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
         // Простая логика подсчёта шагов: пик в значении accY
         if (/*accY > threshold && previousAccY <= threshold && */currentAccel > previousAccel + threshold) {
-            /*if (Date.now() - timeSinceLastStep > stepInterval) {
+            if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
                 timeSinceLastStep = Date.now();
-              }*/
-              stepCount++;
-                console.log("Шаг: " + stepCount);
-                sendStepCountToUnity(stepCount);
-                timeSinceLastStep = Date.now();
+              }
           }
             previousAccY = accY;
             previousAccel = currentAccel;
