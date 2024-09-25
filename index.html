@@ -122,9 +122,9 @@
     
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 10; // Пороговое значение для определения шага
+        let threshold = 25; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
-        let stepInterval = 300; // Минимальное время между шагами (в мс)
+        let stepInterval = 750; // Минимальное время между шагами (в мс)
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
             // Простая логика подсчёта шагов: пик в значении accY
