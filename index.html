@@ -137,12 +137,12 @@
         const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
         // Простая логика подсчёта шагов: пик в значении accY
         if (/*accY > threshold && previousAccY <= threshold && */currentAccel > previousAccel + threshold) {
-            if (Date.now() - timeSinceLastStep > stepInterval) {
+            //if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
                 timeSinceLastStep = Date.now();
-              }
+              //}
           }
             previousAccY = accY;
             previousAccel = currentAccel;
