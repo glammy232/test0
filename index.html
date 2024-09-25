@@ -119,16 +119,24 @@
 
       document.body.appendChild(script);
 
-    
+      let previousAccel = 0;
+      let alpha = 0.8; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 25; // Пороговое значение для определения шага
+        let threshold = 10; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
-        let stepInterval = 750; // Минимальное время между шагами (в мс)
+        let stepInterval = 450; // Минимальное время между шагами (в мс)
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
+          const { accelerationIncludingGravity } = event;
+    const rawAccel = Math.sqrt(
+        accelerationIncludingGravity.x ** 2 +
+        accelerationIncludingGravity.y ** 2 +
+        accelerationIncludingGravity.z ** 2
+    );
+    const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
             // Простая логика подсчёта шагов: пик в значении accY
-            if (accY > threshold && previousAccY <= threshold) {
+            if (accY > threshold && previousAccY <= threshold && currentAccel > previousAccel + threshold) {
                 if (Date.now() - timeSinceLastStep > stepInterval) {
                     stepCount++;
                     console.log("Шаг: " + stepCount);
@@ -137,6 +145,7 @@
                 }
             }
             previousAccY = accY;
+            previousAccel = currentAccel;
         }
 
         function sendStepCountToUnity(stepCount) {
