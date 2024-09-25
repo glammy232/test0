@@ -120,10 +120,10 @@
       document.body.appendChild(script);
 
       let previousAccel = 0;
-      let alpha = 0.5; // Коэффициент фильтра низких частот
+      let alpha = 0.8; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 25; // Пороговое значение для определения шага
+        let threshold = 10000; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
         let stepInterval = 300; // Минимальное время между шагами (в мс)
 
