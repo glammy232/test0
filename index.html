@@ -165,7 +165,7 @@
 
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance/*typeof unityInstance*/ !== 'undefined') {
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount);
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount, "Первый");
             } else {
                 console.log("Unity инстанс не определен");
             }
