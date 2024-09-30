@@ -199,8 +199,8 @@ startTracking();
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
-                if(stepCount > Math.ceil(totalDistance / 25.0)){
-                  stepCount = Math.ceil(totalDistance / 25.0);
+                if(stepCount > Math.ceil(totalDistance / 5.0)){
+                  stepCount = Math.ceil(totalDistance / 5.0);
                 }
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
@@ -217,7 +217,7 @@ startTracking();
               //let st = toString(Math.round(stepCount)) + " third";
               let s = Math.round(stepCount).toString();
             
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " 25");
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " 5");
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
               else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
