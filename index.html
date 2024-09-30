@@ -215,10 +215,9 @@ startTracking();
             if (window.UnityInstance !== 'undefined') {
               console.log("Запрос из сентед a couple of seconds ago");
               //let st = toString(Math.round(stepCount)) + " third";
-              let s = toString(Math.round(stepCount));
-              let b = s + " beef";
-              let c = toString(b);
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  c);
+              let s = Math.round(stepCount).toString();
+            
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " a");
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
               else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
