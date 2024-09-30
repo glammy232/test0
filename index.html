@@ -170,6 +170,8 @@
               console.log("Запрос из сентед a couple of seconds ago");
               let st = toString(stepCount) + " first";
               window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', st);
+              if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
+              else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
                 console.log("Unity инстанс не определен");
             }
