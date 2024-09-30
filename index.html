@@ -182,10 +182,10 @@ startTracking();
       let alpha = 0.95; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 2; // Пороговое значение для определения шага
+        let threshold = 0.125; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
-        let stepInterval = 300; // Минимальное время между шагами (в мс)
-        let distanceAlpha = 0.762;
+        let stepInterval = 25; // Минимальное время между шагами (в мс)
+        let distanceAlpha = 1.5;
         let finalDist = 0;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
@@ -201,8 +201,8 @@ startTracking();
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
-                let dist = totalDistance / distanceAlpha;
-                finalDist = Math.ceil(dist);
+                //let dist = totalDistance / distanceAlpha;
+                //finalDist = Math.ceil(dist);
 
                 /*if(stepCount > finalDist){
                   stepCount = finalDist;
