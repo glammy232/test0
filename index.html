@@ -168,7 +168,8 @@
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance !== 'undefined') {
               console.log("Запрос из сентед a couple of seconds ago");
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount + " " + "first");
+              let st = toString(stepCount) + " first";
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', st);
             } else {
                 console.log("Unity инстанс не определен");
             }
