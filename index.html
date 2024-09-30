@@ -182,7 +182,7 @@ startTracking();
       let alpha = 0.8; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 10; // Пороговое значение для определения шага
+        let threshold = 1.0; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
         let stepInterval = 300; // Минимальное время между шагами (в мс)
         let distanceAlpha = 0.762;
@@ -219,7 +219,7 @@ startTracking();
               let s = Math.round(stepCount).toString();
               let s0 = Math.round(distanceAlpha).toString();
             
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " " + s0 + " dist00");
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " " + s0 + " dist01");
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
               else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
