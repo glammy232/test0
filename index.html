@@ -126,11 +126,8 @@
         let threshold = 0.25; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
         let stepInterval = 300; // Минимальное время между шагами (в мс)
-        let isMoving = false;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
-          trackLocation();
-          if(isMoving == false) return;
           console.log("калькуляция началась");
           const { accelerationIncludingGravity } = event;
           const rawAccel = Math.sqrt(
@@ -143,6 +140,9 @@
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
+                if(stepCount > totalDistance / 0.762){
+                  stepCount = totalDistance / 0.762;
+                }
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
                 timeSinceLastStep = Date.now();
@@ -152,18 +152,63 @@
             previousAccel = currentAccel;
         }
 
-        function trackLocation(event) {
-            const { speed } = event.coords;
+        // Функция для вычисления расстояния между двумя точками на поверхности Земли
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // Радиус Земли в метрах
+    const φ1 = lat1 * Math.PI / 180; // φ, λ в радианах
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
 
-            // Если скорость больше нуля, считаем, что пользователь находится в движении
-            if (speed > 0) {
-                isMoving = true;
-                console.log("Мувенг трушный");
-            } else {
-                isMoving = false;
-                console.log("Мувенг не трушный");
-            }
-        }
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const distance = R * c; // Расстояние в метрах
+    return distance;
+}
+
+let previousPosition = null;
+let totalDistance = 0;
+
+// Функция для обработки успешного получения геолокации
+function handleLocationSuccess(position) {
+    const { latitude, longitude } = position.coords;
+
+    if (previousPosition) {
+        const distance = calculateDistance(
+            previousPosition.latitude, previousPosition.longitude,
+            latitude, longitude
+        );
+        totalDistance += distance;
+        console.log('Пройденное расстояние:', totalDistance.toFixed(2), 'метров');
+    }
+
+    previousPosition = { latitude, longitude };
+}
+
+// Функция для обработки ошибок при получении геолокации
+function handleLocationError(error) {
+    console.error('Ошибка получения геолокации:', error.message);
+}
+
+// Функция для запуска отслеживания геолокации
+function startTracking() {
+    if ('geolocation' in navigator) {
+        // Запрашиваем геолокацию с интервалом 1 секунда
+        navigator.geolocation.watchPosition(handleLocationSuccess, handleLocationError, {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 27000
+        });
+    } else {
+        console.error('Геолокация не поддерживается в этом браузере');
+    }
+}
+
+// Запускаем отслеживание
+startTracking();
 
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance !== 'undefined') {
