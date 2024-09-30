@@ -199,9 +199,9 @@ startTracking();
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 //stepCount++;
-                stepCount = Math.ceil(totalDistance / 0.762);
+                stepCount = Math.ceil(totalDistance);
                 if(stepCount > Math.ceil(totalDistance / 0.762)){
-                  stepCount = Math.ceil(totalDistance / 0.762);
+                  stepCount = Math.ceil(totalDistance);
                 }
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
