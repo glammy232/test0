@@ -198,7 +198,8 @@ startTracking();
         // Простая логика подсчёта шагов: пик в значении accY
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
-                stepCount++;
+                //stepCount++;
+                stepCount = Math.ceil(totalDistance / 0.762);
                 if(stepCount > Math.ceil(totalDistance / 0.762)){
                   stepCount = Math.ceil(totalDistance / 0.762);
                 }
