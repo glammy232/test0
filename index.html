@@ -223,7 +223,7 @@ startTracking();
               let s = Math.round(stepCount).toString();
               let s0 = Math.round(finalDist).toString();
             
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " " + s0 + " dist04");
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " " + s0 + " dist05");
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
               else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
