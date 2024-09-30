@@ -131,7 +131,7 @@
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
           //trackLocation();
           //if(isMoving == false) return;
-
+          console.log("калькуляция началась");
           const { accelerationIncludingGravity } = event;
           const rawAccel = Math.sqrt(
           accelerationIncludingGravity.x ** 2 +
@@ -158,13 +158,16 @@
             // Если скорость больше нуля, считаем, что пользователь находится в движении
             if (speed > 0) {
                 isMoving = true;
+                console.log("Мувенг трушный");
             } else {
                 isMoving = false;
+                console.log("Мувенг не трушный");
             }
         }
 
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance !== 'undefined') {
+              console.log("Запрос из сентед a couple of seconds ago");
               window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount + " " + "first");
             } else {
                 console.log("Unity инстанс не определен");
