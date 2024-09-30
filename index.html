@@ -217,7 +217,8 @@ startTracking();
               //let st = toString(Math.round(stepCount)) + " third";
               let s = toString(Math.round(stepCount));
               let b = s + " five";
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  b);
+              let c = toString(b);
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  c);
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
               else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
