@@ -119,39 +119,7 @@
 
       document.body.appendChild(script);
 
-      let previousAccel = 0;
-      let alpha = 0.8; // Коэффициент фильтра низких частот
-        let previousAccY = 0;
-        let stepCount = 0;
-        let threshold = 0.25; // Пороговое значение для определения шага
-        let timeSinceLastStep = 0;
-        let stepInterval = 300; // Минимальное время между шагами (в мс)
-
-        function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
-          console.log("калькуляция началась");
-          const { accelerationIncludingGravity } = event;
-          const rawAccel = Math.sqrt(
-          accelerationIncludingGravity.x ** 2 +
-          accelerationIncludingGravity.y ** 2 +
-          accelerationIncludingGravity.z ** 2
-        );
-        const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
-        // Простая логика подсчёта шагов: пик в значении accY
-        if (currentAccel > previousAccel + threshold) {
-            if (Date.now() - timeSinceLastStep > stepInterval) {
-                stepCount++;
-                if(stepCount > Math.ceil(totalDistance / 0.762)){
-                  stepCount = Math.ceil(totalDistance / 0.762);
-                }
-                console.log("Шаг: " + stepCount);
-                sendStepCountToUnity(stepCount);
-                timeSinceLastStep = Date.now();
-              }
-          }
-            previousAccY = accY;
-            previousAccel = currentAccel;
-        }
-
+      
         // Функция для вычисления расстояния между двумя точками на поверхности Земли
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Радиус Земли в метрах
@@ -209,6 +177,39 @@ function startTracking() {
 
 // Запускаем отслеживание
 startTracking();
+
+      let previousAccel = 0;
+      let alpha = 0.8; // Коэффициент фильтра низких частот
+        let previousAccY = 0;
+        let stepCount = 0;
+        let threshold = 0.25; // Пороговое значение для определения шага
+        let timeSinceLastStep = 0;
+        let stepInterval = 300; // Минимальное время между шагами (в мс)
+
+        function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
+          console.log("калькуляция началась");
+          const { accelerationIncludingGravity } = event;
+          const rawAccel = Math.sqrt(
+          accelerationIncludingGravity.x ** 2 +
+          accelerationIncludingGravity.y ** 2 +
+          accelerationIncludingGravity.z ** 2
+        );
+        const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
+        // Простая логика подсчёта шагов: пик в значении accY
+        if (currentAccel > previousAccel + threshold) {
+            if (Date.now() - timeSinceLastStep > stepInterval) {
+                stepCount++;
+                if(stepCount > Math.ceil(totalDistance / 0.762)){
+                  stepCount = Math.ceil(totalDistance / 0.762);
+                }
+                console.log("Шаг: " + stepCount);
+                sendStepCountToUnity(stepCount);
+                timeSinceLastStep = Date.now();
+              }
+          }
+            previousAccY = accY;
+            previousAccel = currentAccel;
+        }
 
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance !== 'undefined') {
