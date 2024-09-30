@@ -182,10 +182,11 @@ startTracking();
       let alpha = 0.8; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 1.5; // Пороговое значение для определения шага
+        let threshold = 0.8; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
         let stepInterval = 300; // Минимальное время между шагами (в мс)
         let distanceAlpha = 0.05;
+        let finalDist = 0;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
           console.log("калькуляция началась");
@@ -201,7 +202,7 @@ startTracking();
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
                 let dist = totalDistance / distanceAlpha;
-                let finalDist = Math.ceil(dist);
+                finalDist = Math.ceil(dist);
 
                 if(stepCount > finalDist){
                   stepCount = finalDist;
@@ -220,7 +221,7 @@ startTracking();
               console.log("Запрос из сентед a couple of seconds ago");
               //let st = toString(Math.round(stepCount)) + " third";
               let s = Math.round(stepCount).toString();
-              let s0 = Math.round(distanceAlpha).toString();
+              let s0 = Math.round(finalDist).toString();
             
               window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " " + s0 + " dist02");
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
