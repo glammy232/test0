@@ -185,6 +185,7 @@ startTracking();
         let threshold = 0.25; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
         let stepInterval = 300; // Минимальное время между шагами (в мс)
+        let distanceAlpha = 2.0;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
           console.log("калькуляция началась");
@@ -199,8 +200,8 @@ startTracking();
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
-                if(stepCount > Math.ceil(totalDistance) / 2.0){
-                  stepCount = Math.ceil(totalDistance) / 2.0;
+                if(stepCount > Math.ceil(totalDistance) / distanceAlpha){
+                  stepCount = Math.ceil(totalDistance) / distanceAlpha;
                 }
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
@@ -216,8 +217,9 @@ startTracking();
               console.log("Запрос из сентед a couple of seconds ago");
               //let st = toString(Math.round(stepCount)) + " third";
               let s = Math.round(stepCount).toString();
+              let s0 = Math.round(distanceAlpha).toString();
             
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " 2.0");
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + s0 + " dist");
               if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
               else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
             } else {
