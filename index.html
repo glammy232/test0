@@ -184,7 +184,7 @@ startTracking();
         let stepCount = 0;
         let threshold = 0.45; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
-        let stepInterval = 4500; // Минимальное время между шагами (в мс)
+        let stepInterval = 450; // Минимальное время между шагами (в мс)
         let distanceAlpha = 1.5;
         let finalDist = 0;
 
@@ -203,7 +203,7 @@ startTracking();
                 stepCount++;
 
                 sendStepCountToUnity(stepCount);
-                timeSinceLastStep = Date.now();
+                timeSinceLastStep = Date.now() + stepInterval;
               }
               else return;
           }
@@ -218,9 +218,8 @@ startTracking();
               let s = Math.round(stepCount).toString();
               let s0 = Math.round(finalDist).toString();
             
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " dist53");
-              if(isMoving == true) window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "идём");
-              else window.UnityInstance.SendMessage('StepCounter', 'ShowMoving', "стоим");
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " dist54");
+              
             } else {
                 console.log("Unity инстанс не определен");
             }
