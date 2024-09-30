@@ -129,8 +129,8 @@
         let isMoving = false;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
-          //trackLocation();
-          //if(isMoving == false) return;
+          trackLocation();
+          if(isMoving == false) return;
 
           const { accelerationIncludingGravity } = event;
           const rawAccel = Math.sqrt(
@@ -165,7 +165,7 @@
 
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance !== 'undefined') {
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount, "Первый");
+              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount', stepCount + " " + "first");
             } else {
                 console.log("Unity инстанс не определен");
             }
