@@ -120,17 +120,17 @@
       document.body.appendChild(script);
 
       let previousAccel = 0;
-      let alpha = 0.8; // Коэффициент фильтра низких частот
+      let alpha = 0.95; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
-        let threshold = 10; // Пороговое значение для определения шага
+        let threshold = 0.125; // Пороговое значение для определения шага
         let timeSinceLastStep = 0;
-        let stepInterval = 300; // Минимальное время между шагами (в мс)
+        let stepInterval = 25; // Минимальное время между шагами (в мс)
         let isMoving = false;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
-          trackLocation();
-          if(isMoving == false) return;
+          //trackLocation();
+          //if(isMoving == false) return;
 
           const { accelerationIncludingGravity } = event;
           const rawAccel = Math.sqrt(
