@@ -198,10 +198,9 @@ startTracking();
         // Простая логика подсчёта шагов: пик в значении accY
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
-                //stepCount++;
-                stepCount = Math.ceil(totalDistance);
-                if(stepCount > Math.ceil(totalDistance / 0.762)){
-                  stepCount = Math.ceil(totalDistance);
+                stepCount++;
+                if(stepCount > Math.ceil(totalDistance / 18)){
+                  stepCount = Math.ceil(totalDistance / 18);
                 }
                 console.log("Шаг: " + stepCount);
                 sendStepCountToUnity(stepCount);
