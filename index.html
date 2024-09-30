@@ -140,7 +140,7 @@
         if (currentAccel > previousAccel + threshold) {
             if (Date.now() - timeSinceLastStep > stepInterval) {
                 stepCount++;
-                if(stepCount > totalDistance / 0.762){
+                if(stepCount > Math.ceil(totalDistance / 0.762)){
                   stepCount = totalDistance / 0.762;
                 }
                 console.log("Шаг: " + stepCount);
