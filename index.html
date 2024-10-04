@@ -58,11 +58,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/test.loader.js";
+      var loaderUrl = buildUrl + "/TestSteps.loader.js";
       var config = {
-        dataUrl: buildUrl + "/test.data.unityweb",
-        frameworkUrl: buildUrl + "/test.framework.js.unityweb",
-        codeUrl: buildUrl + "/test.wasm.unityweb",
+        dataUrl: buildUrl + "/TestSteps.data.unityweb",
+        frameworkUrl: buildUrl + "/TestSteps.framework.js.unityweb",
+        codeUrl: buildUrl + "/TestSteps.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "MoveToEarnTest",
@@ -137,7 +137,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return distance;
 }
 
-let previousPosition = null;
+/*let previousPosition = null;
 let totalDistance = 0;
 
 // Функция для обработки успешного получения геолокации
@@ -176,7 +176,7 @@ function startTracking() {
 }
 
 // Запускаем отслеживание
-startTracking();
+startTracking();*/
 
       let previousAccel = 0;
       let alpha = 0.9; // Коэффициент фильтра низких частот
@@ -216,9 +216,9 @@ startTracking();
               console.log("Запрос из сентед a couple of seconds ago");
               //let st = toString(Math.round(stepCount)) + " third";
               let s = Math.round(stepCount).toString();
-              let s0 = Math.round(finalDist).toString();
             
-              window.UnityInstance.SendMessage('StepCounter', 'ReceiveStepCount',  s + " dist55");
+              window.UnityInstance.SendMessage('MoveToEarnPanel', 'ReceiveStepCount',  s);
+              window.UnityInstance.SendMessage('MoveToEarnPanel(Clone)', 'ReceiveStepCount',  s);
               
             } else {
                 console.log("Unity инстанс не определен");
