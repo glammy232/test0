@@ -58,11 +58,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/TestSteps.loader.js";
+      var loaderUrl = buildUrl + "/ZooBuild.loader.js";
       var config = {
-        dataUrl: buildUrl + "/webgl.data.unityweb",
-        frameworkUrl: buildUrl + "/build.framework.js.unityweb",
-        codeUrl: buildUrl + "/TestSteps.wasm.unityweb",
+        dataUrl: buildUrl + "/ZooBuild.data.gz",
+        frameworkUrl: buildUrl + "/ZooBuild.framework.js.gz",
+        codeUrl: buildUrl + "/ZooBuild.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "MoveToEarnTest",
@@ -217,7 +217,7 @@ startTracking();*/
               //let st = toString(Math.round(stepCount)) + " third";
               let s = Math.round(stepCount).toString();
             
-              window.UnityInstance.SendMessage('MoveToEarnPanel', 'ReceiveStepCount',  s);
+              //window.UnityInstance.SendMessage('MoveToEarnPanel', 'ReceiveStepCount',  s);
               window.UnityInstance.SendMessage('MoveToEarnPanel(Clone)', 'ReceiveStepCount',  s);
               
             } else {
