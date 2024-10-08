@@ -57,11 +57,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/103.loader.js";
+      var loaderUrl = buildUrl + "/ToDestroy.loader.js";
       var config = {
-        dataUrl: buildUrl + "/103.data.gz",
-        frameworkUrl: buildUrl + "/103.framework.js.gz",
-        codeUrl: buildUrl + "/103.wasm.gz",
+        dataUrl: buildUrl + "/ToDestroy.data.gz",
+        frameworkUrl: buildUrl + "/ToDestroy.framework.js.gz",
+        codeUrl: buildUrl + "/ToDestroy.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Urban Clans LTD",
         productName: "UrbanClans",
@@ -154,7 +154,7 @@
 
               let s = Math.round(stepCount).toString();
             
-              window.UnityInstance.SendMessage('MoveToEarnPanel(Clone)', 'ReceiveStepCount',  s);
+              window.UnityInstance.SendMessage('MoveToEarnPanel', 'ReceiveStepCount',  s);
               
             } 
             else {
