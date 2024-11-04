@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | MoveToEarnTest</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=330 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -20,10 +20,9 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">MoveToEarnTest</div>
+        <div id="unity-build-title">UrbanClans</div>
       </div>
     </div>
-    <script src="Build/test.loader.js"></script>
     <script>
 
       var container = document.querySelector("#unity-container");
@@ -58,14 +57,14 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/zootopia-test0.loader.js";
+      var loaderUrl = buildUrl + "/ZootopiaBuild.loader.js";
       var config = {
-        dataUrl: buildUrl + "/webgl.data",
-        frameworkUrl: buildUrl + "/build.framework.js",
-        codeUrl: buildUrl + "/build.wasm",
+        dataUrl: buildUrl + "/ZootopiaBuild.data.gz",
+        frameworkUrl: buildUrl + "/ZootopiaBuild.framework.js.gz",
+        codeUrl: buildUrl + "/ZootopiaBuild.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "MoveToEarnTest",
+        companyName: "Urban Clans LTD",
+        productName: "UrbanClans",
         productVersion: "1.0",
         showBanner: unityShowBanner,
       };
@@ -95,7 +94,7 @@
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-        canvas.style.width = "960px";
+        canvas.style.width = "330px";
         canvas.style.height = "600px";
       }
 
@@ -107,78 +106,18 @@
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
-                  loadingBar.style.display = "none";
-                  window.UnityInstance = unityInstance;
-                  fullscreenButton.onclick = () => {
+                window.unityInstance = unityInstance;
+                loadingBar.style.display = "none";
+                fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
               }).catch((message) => {
                 alert(message);
-              })
+              });
             };
 
       document.body.appendChild(script);
-
-      
-        // Функция для вычисления расстояния между двумя точками на поверхности Земли
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3; // Радиус Земли в метрах
-    const φ1 = lat1 * Math.PI / 180; // φ, λ в радианах
-    const φ2 = lat2 * Math.PI / 180;
-    const Δφ = (lat2 - lat1) * Math.PI / 180;
-    const Δλ = (lon2 - lon1) * Math.PI / 180;
-
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    const distance = R * c; // Расстояние в метрах
-    return distance;
-}
-
-/*let previousPosition = null;
-let totalDistance = 0;
-
-// Функция для обработки успешного получения геолокации
-function handleLocationSuccess(position) {
-    const { latitude, longitude } = position.coords;
-
-    if (previousPosition) {
-        const distance = calculateDistance(
-            previousPosition.latitude, previousPosition.longitude,
-            latitude, longitude
-        );
-        totalDistance += distance;
-        console.log('Пройденное расстояние:', totalDistance.toFixed(2), 'метров');
-    }
-
-    previousPosition = { latitude, longitude };
-}
-
-// Функция для обработки ошибок при получении геолокации
-function handleLocationError(error) {
-    console.error('Ошибка получения геолокации:', error.message);
-}
-
-// Функция для запуска отслеживания геолокации
-function startTracking() {
-    if ('geolocation' in navigator) {
-        // Запрашиваем геолокацию с интервалом 1 секунда
-        navigator.geolocation.watchPosition(handleLocationSuccess, handleLocationError, {
-            enableHighAccuracy: true,
-            maximumAge: 0,
-            timeout: 27000
-        });
-    } else {
-        console.error('Геолокация не поддерживается в этом браузере');
-    }
-}
-
-// Запускаем отслеживание
-startTracking();*/
-
-      let previousAccel = 0;
+      /*let previousAccel = 0;
       let alpha = 0.9; // Коэффициент фильтра низких частот
         let previousAccY = 0;
         let stepCount = 0;
@@ -189,11 +128,10 @@ startTracking();*/
         let finalDist = 0;
 
         function calculateSteps(accX, accY, accZ, rotAlpha, rotBeta, rotGamma) {
-          console.log("калькуляция началась");
           const { accelerationIncludingGravity } = event;
           const rawAccel = Math.sqrt(
-          accelerationIncludingGravity.x ** 2 +
-          accelerationIncludingGravity.y ** 2 +
+          accelerationIncludingGravity.x**2 +
+          accelerationIncludingGravity.y**2 +
           accelerationIncludingGravity.z ** 2
         );
         const currentAccel = alpha * previousAccel + (1 - alpha) * rawAccel;
@@ -213,14 +151,13 @@ startTracking();*/
 
         function sendStepCountToUnity(stepCount) {
             if (window.UnityInstance !== 'undefined') {
-              console.log("Запрос из сентед a couple of seconds ago");
-              //let st = toString(Math.round(stepCount)) + " third";
+
               let s = Math.round(stepCount).toString();
             
-              //window.UnityInstance.SendMessage('MoveToEarnPanel', 'ReceiveStepCount',  s);
               window.UnityInstance.SendMessage('MoveToEarnPanel(Clone)', 'ReceiveStepCount',  s);
               
-            } else {
+            } 
+            else {
                 console.log("Unity инстанс не определен");
             }
         }
@@ -243,7 +180,7 @@ startTracking();*/
           });
       } else {
           console.log('Гироскоп не поддерживается');
-      }
-  </script>
+      }*/
+    </script>
   </body>
 </html>

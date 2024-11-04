@@ -94,6 +94,7 @@
     <type fullname="PersonViewModel" preserve="all" />
     <type fullname="ResourcesChanger" preserve="all" />
     <type fullname="ResourcesDisplay" preserve="all" />
+    <type fullname="ResourcesPopUp" preserve="all" />
     <type fullname="ResourcesPopUpSpawner" preserve="all" />
     <type fullname="SpriteSorter" preserve="all" />
     <type fullname="StepCounter" preserve="all" />
