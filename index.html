@@ -36,22 +36,31 @@
 
         // Функция для обработки данных пользователя после авторизации через Telegram
         function onTelegramAuth(user) {
-            unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", "Start tg Auth");
-            console.warn("Start TG AUTH");
-            alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
-            if (unityInstance) {
-                const userData = JSON.stringify(user); // Преобразуем объект в строку
-                unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", userData);
-            } else {
+            console.log("Telegram Auth triggered:", user);
+
+            // Проверяем, что Unity загружен
+            if (!unityInstance) {
                 console.error("Unity instance is not initialized yet.");
+                alert("Unity is still loading. Please try again later.");
+                return;
             }
+
+            // Отправляем данные в Unity
+            const userData = JSON.stringify(user); // Преобразуем объект в строку
+            console.log("Sending user data to Unity:", userData);
+            unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", userData);
+
+            // Оповещаем пользователя
+            alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
         }
 
         // Настройка Unity WebGL
         window.addEventListener("load", function () {
             // Регистрация Service Worker (если используется)
             if ("serviceWorker" in navigator) {
-                navigator.serviceWorker.register("ServiceWorker.js");
+                navigator.serviceWorker.register("ServiceWorker.js").catch((error) => {
+                    console.error("Failed to register service worker:", error);
+                });
             }
 
             // Настройка viewport для мобильных устройств
@@ -114,7 +123,8 @@
                     loadingBar.style.display = "none";
                     console.log("Unity instance created successfully.");
                 }).catch((message) => {
-                    alert(message);
+                    alert("Failed to load Unity WebGL: " + message);
+                    console.error("Unity WebGL error:", message);
                 });
             };
             document.body.appendChild(script);
