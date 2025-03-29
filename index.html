@@ -20,20 +20,6 @@
       <div id="unity-warning"> </div>
     </div>
     <script>
-      function sendInitDataToUnity() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const initData = window.Telegram.WebApp.initData;
-                if (initData) {
-                    console.log("Sending initData to Unity:", initData);
-                    // Отправляем initData в Unity через SendMessage
-                    unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", initData);
-                } else {
-                    console.error("InitData is not available.");
-                }
-            } else {
-                console.error("Telegram WebApp is not available.");
-            }
-        }
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("ServiceWorker.js");
@@ -112,6 +98,24 @@
         });
       };
       document.body.appendChild(script);
+
+      function sendInitDataToUnity() {
+    if (window.Telegram && window.Telegram.WebApp) {
+        // Работаем с реальным initData
+        const initData = window.Telegram.WebApp.initData;
+        if (initData) {
+            console.log("Sending initData to Unity:", initData);
+            unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", initData);
+        } else {
+            console.error("InitData is not available.");
+        }
+    } else {
+        // Используем мок-данные для тестирования
+        console.warn("Telegram WebApp is not available. Using mock data for testing.");
+        const mockInitData = "user=%7B%22id%22%3A123456789%2C%22first_name%22%3A%22John%22%7D&auth_date=1672531199&hash=abcdef1234567890";
+        unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", mockInitData);
+    }
+}
     </script>
   </body>
 </html>
