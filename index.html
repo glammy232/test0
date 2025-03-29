@@ -52,7 +52,7 @@
                 }
             } else {
                 console.warn("Telegram WebApp is not available. Using mock data for testing.");
-                const mockInitData = "user=%7B%22id%22%3A123456789%2C%22first_name%22%3A%22John%22%7D&auth_date=1672531199&hash=abcdef1234567890";
+                const mockInitData = "chlen";
                 unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", mockInitData);
             }
         };
