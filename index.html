@@ -20,6 +20,20 @@
       <div id="unity-warning"> </div>
     </div>
     <script>
+      function sendInitDataToUnity() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const initData = window.Telegram.WebApp.initData;
+                if (initData) {
+                    console.log("Sending initData to Unity:", initData);
+                    // РћС‚РїСЂР°РІР»СЏРµРј initData РІ Unity С‡РµСЂРµР· SendMessage
+                    unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", initData);
+                } else {
+                    console.error("InitData is not available.");
+                }
+            } else {
+                console.error("Telegram WebApp is not available.");
+            }
+        }
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
           navigator.serviceWorker.register("ServiceWorker.js");
@@ -96,20 +110,6 @@
         }).catch((message) => {
           alert(message);
         });
-
-        function sendInitDataToUnity() {
-    if (window.Telegram && window.Telegram.WebApp) {
-        const initData = window.Telegram.WebApp.initData;
-        // Отправляем initData в Unity через SendMessage
-        if (initData) {
-            unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", initData);
-        } else {
-            console.error("InitData is not available.");
-        }
-    } else {
-        console.error("Telegram WebApp is not available.");
-    }
-}
       };
       document.body.appendChild(script);
     </script>
