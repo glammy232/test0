@@ -36,6 +36,7 @@
 
         // Функция для обработки данных пользователя после авторизации через Telegram
         function onTelegramAuth(user) {
+            unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", "Start tg Auth");
             console.warn("Start TG AUTH");
             alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
             if (unityInstance) {
