@@ -34,6 +34,26 @@
         // Глобальная переменная для хранения экземпляра Unity
         var unityInstance = null;
 
+        window.sendInitDataToUnity = function () {
+            if (!unityInstance) {
+                console.error("Unity instance is not initialized yet.");
+                return;
+            }
+
+            if (window.Telegram && window.Telegram.WebApp) {
+                const initData = window.Telegram.WebApp.initData;
+                if (initData) {
+                    console.log("Sending initData to Unity:", initData);
+                    unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", initData);
+                } else {
+                    console.error("InitData is not available.");
+                }
+            } else {
+                console.warn("Telegram WebApp is not available. Using mock data for testing.");
+                const mockInitData = "chlen";
+                unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", mockInitData);
+            }
+        };
         // Функция для обработки данных пользователя после авторизации через Telegram
         function onTelegramAuth(user) {
             alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
