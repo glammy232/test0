@@ -41,7 +41,7 @@
             // Отправляем данные пользователя в Unity
             if (unityInstance) {
                 const userData = JSON.stringify(user); // Преобразуем объект в строку
-                unityInstance.SendMessage("TelegramLoginHandler", "OnUserLoggedIn", userData);
+                unityInstance.SendMessage("TelegramMiniApp", "ReceivedInitData", userData);
             } else {
                 console.error("Unity instance is not initialized yet.");
             }
