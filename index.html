@@ -33,7 +33,19 @@
     <script>
         // Глобальная переменная для хранения экземпляра Unity
         var unityInstance = null;
+function checkTelegramWebApp() {
+    if (window.Telegram && window.Telegram.WebApp) {
+        console.log("Telegram WebApp is now available.");
+        unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", "Awailabelasdwa");
+        // Здесь можно вызвать функцию, которая использует Telegram.WebApp
+    } else {
+        console.warn("Telegram WebApp is not available yet. Retrying...");
+        unityInstance.SendMessage("TelegramMiniApp", "ReceiveInitData", "Retrying");
+        setTimeout(checkTelegramWebApp, 500); // Повторяем проверку через 500 мс
+    }
+}
 
+checkTelegramWebApp();
         // Функция для обработки данных пользователя после авторизации через Telegram
         function onTelegramAuth(user) {
             console.log("Telegram Auth triggered:", user);
