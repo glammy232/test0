@@ -33,7 +33,7 @@
     <!-- Используем type="module" для работы с import -->
     <script type="module">
         // Импортируем функции из @telegram-apps/sdk
-        import { retrieveLaunchParams, ready, expand } from 'https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js';
+        import { retrieveLaunchParams, ready } from 'https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js';
 
         var unityInstance = null;
 
@@ -122,8 +122,10 @@
                 // Уведомляем Telegram, что приложение готово
                 ready();
 
-                // Разворачиваем Mini App на весь экран
-                expand();
+                // Разворачиваем Mini App на весь экран через Telegram.WebApp
+                if (window.Telegram && window.Telegram.WebApp) {
+                    Telegram.WebApp.expand();
+                }
 
                 // Пример: Отправляем initData в Unity
                 if (unityInstance) {
