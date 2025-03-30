@@ -174,7 +174,7 @@
         function callEverySecond() {
             console.log("Этот метод вызывается каждую секунду!");
             if (unityInstance) {
-                unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Test");
+                getTelegramInitData();
             }
         }
 
