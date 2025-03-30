@@ -112,6 +112,7 @@
         function getTelegramInitData() {
     if (window.Telegram && window.Telegram.WebApp) {
         const initData = window.Telegram.WebApp.initData;
+      unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Всё гуд" + initData);
         if (initData) {
             return initData;
         } else {
@@ -135,7 +136,7 @@ function sendInitDataToUnity() {
         unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initData);
     } else {
         console.error("Не удалось получить initData");
-        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Errorasd");
+        //unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Errorasd");
     }
 }
 
