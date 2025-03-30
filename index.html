@@ -107,40 +107,50 @@
       };
       document.body.appendChild(script);
 
-      function getTelegramInitData() {
-    // Проверяем, доступен ли объект Telegram.WebApp
+        function getTelegramInitData() {
     if (window.Telegram && window.Telegram.WebApp) {
-        return window.Telegram.WebApp.initData;
+        const initData = window.Telegram.WebApp.initData;
+        if (initData) {
+            return initData;
+        } else {
+            console.error("Telegram WebApp initData is empty");
+            return null;
+        }
     } else {
         console.error("Telegram WebApp API недоступен");
         return null;
     }
 }
 
-// Функция для передачи initData в Unity
 function sendInitDataToUnity() {
+    if (!unityInstance) {
+        console.error("Unity instance is not initialized yet.");
+        return;
+    }
+
     const initData = getTelegramInitData();
     if (initData) {
-        // Вызываем функцию Unity, передавая initData
-        SendMessage('TelegramManager', 'OnReceiveInitData', initData);
+        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initData);
     } else {
         console.error("Не удалось получить initData");
-        SendMessage('TelegramManager', 'OnReceiveInitData', "Error");
+        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Error");
     }
 }
 
-      function onTelegramAuth(user) {
-        console.log("Telegram Auth triggered:", user);
-        SendMessage('TelegramManager', 'OnReceiveInitData', user);
+function onTelegramAuth(user) {
+    console.log("Telegram Auth triggered:", user);
 
-            // Проверяем, что Unity загружен
-        if (!unityInstance) {
-          console.error("Unity instance is not initialized yet.");
-          SendMessage('TelegramManager', 'OnReceiveInitData', "UnityInstanceIsNull");
-          alert("Unity is still loading. Please try again later.");
-          return;
-          }
-      }
+    // Проверяем, что Unity загружен
+    if (!unityInstance) {
+        console.error("Unity instance is not initialized yet.");
+        alert("Unity is still loading. Please try again later.");
+        return;
+    }
+
+    // Преобразуем объект user в строку
+    const userData = JSON.stringify(user);
+    unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', userData);
+}
     </script>
   </body>
 </html>
