@@ -21,7 +21,7 @@
       <div id="unity-warning"> </div>
     </div>
     <script>
-      var unityInstance; // Глобальная переменная для экземпляра Unity
+      var unityInstance; // ГѓГ«Г®ГЎГ Г«ГјГ­Г Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї Г¤Г«Гї ГЅГЄГ§ГҐГ¬ГЇГ«ГїГ°Г  Unity
 
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
@@ -53,11 +53,11 @@
         }
 
         var buildUrl = "Build";
-        var loaderUrl = buildUrl + "/Bottle1.loader.js";
+        var loaderUrl = buildUrl + "/Bottle2.loader.js";
         var config = {
-          dataUrl: buildUrl + "/Bottle1.data.unityweb",
-          frameworkUrl: buildUrl + "/Bottle1.framework.js.unityweb",
-          codeUrl: buildUrl + "/Bottle1.wasm.unityweb",
+          dataUrl: buildUrl + "/Bottle2.data.unityweb",
+          frameworkUrl: buildUrl + "/Bottle2.framework.js.unityweb",
+          codeUrl: buildUrl + "/Bottle2.wasm.unityweb",
           streamingAssetsUrl: "StreamingAssets",
           companyName: "DefaultCompany",
           productName: "BottleGames",
@@ -85,7 +85,7 @@
 
             // Telegram WebApp Integration
             if (window.Telegram?.WebApp) {
-              // Подготовка данных аутентификации
+              // ГЏГ®Г¤ГЈГ®ГІГ®ГўГЄГ  Г¤Г Г­Г­Г»Гµ Г ГіГІГҐГ­ГІГЁГґГЁГЄГ Г¶ГЁГЁ
               const authData = {
                 initData: window.Telegram.WebApp.initData || '',
                 initDataUnsafe: window.Telegram.WebApp.initDataUnsafe || {},
@@ -94,14 +94,14 @@
                 version: window.Telegram.WebApp.version || '1.0'
               };
 
-              // Отправка сырых initData в Unity
+              // ГЋГІГЇГ°Г ГўГЄГ  Г±Г»Г°Г»Гµ initData Гў Unity
               unityInstance.SendMessage(
                 'TelegramManager', 
                 'OnTelegramAuthReceived', 
                 authData.initData
               );
 
-              // Создание структурированного запроса
+              // Г‘Г®Г§Г¤Г Г­ГЁГҐ Г±ГІГ°ГіГЄГІГіГ°ГЁГ°Г®ГўГ Г­Г­Г®ГЈГ® Г§Г ГЇГ°Г®Г±Г 
               const request = {
                 TelegramId: authData.initDataUnsafe.user?.id || 0,
                 Username: authData.initDataUnsafe.user?.username || '',
@@ -111,18 +111,18 @@
                 StartParam: window.Telegram.WebApp.startParam || ''
               };
 
-              // Отправка структурированных данных в Unity
+              // ГЋГІГЇГ°Г ГўГЄГ  Г±ГІГ°ГіГЄГІГіГ°ГЁГ°Г®ГўГ Г­Г­Г»Гµ Г¤Г Г­Г­Г»Гµ Гў Unity
               unityInstance.SendMessage(
                 'TelegramManager', 
                 'OnTelegramAuthReceived', 
                 JSON.stringify(request)
               );
 
-              // Развертывание WebApp на весь экран
+              // ГђГ Г§ГўГҐГ°ГІГ»ГўГ Г­ГЁГҐ WebApp Г­Г  ГўГҐГ±Гј ГЅГЄГ°Г Г­
               window.Telegram.WebApp.expand();
             } else {
               console.log("Not in Telegram - sending test data");
-              // Тестовые данные для локальной разработки
+              // Г’ГҐГ±ГІГ®ГўГ»ГҐ Г¤Г Г­Г­Г»ГҐ Г¤Г«Гї Г«Г®ГЄГ Г«ГјГ­Г®Г© Г°Г Г§Г°Г ГЎГ®ГІГЄГЁ
               const testData = {
                 TelegramId: 12345,
                 Username: "test_user",
