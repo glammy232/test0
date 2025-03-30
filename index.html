@@ -28,7 +28,7 @@
             data-request-access="write">
         </script>
     </div>
-    <script>
+    <script type = "module">
       var unityInstance = null;
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
@@ -79,13 +79,6 @@
         showBanner: unityShowBanner,
       };
 
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
         var meta = document.createElement('meta');
@@ -110,12 +103,11 @@
       };
       document.body.appendChild(script);
 
-      //const { initDataR } = TelegramAppsSDK.retrieveLaunchParams();
+      
+        import { retrieveLaunchParams } from '@telegram-apps/sdk'
 
-      const launchParams = TelegramAppsSDK.retrieveLaunchParams();
-
-// Извлекаем initData
-      const { iD, iDR } = launchParams;
+        // Получаем initDataRaw
+        const { initDataRaw } = retrieveLaunchParams();
 
         function getTelegramInitData() {
           unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', window.Telegram + " " + window.Telegram.WebApp);
@@ -166,7 +158,8 @@ function onTelegramAuth(user) {
       function callEverySecond() {
     console.log("Этот метод вызывается каждую секунду!");
         //getTelegramInitData();
-        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', id);
+        
+        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initDataRaw);
 }
 
 // Запускаем метод каждую секунду
