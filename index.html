@@ -110,6 +110,7 @@
       document.body.appendChild(script);
 
         function getTelegramInitData() {
+          unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', window.Telegram + " " + window.Telegram.WebApp);
     if (window.Telegram && window.Telegram.WebApp) {
         const initData = window.Telegram.WebApp.initData;
       unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Всё гуд" + initData);
