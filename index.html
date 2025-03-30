@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
+    <script src="https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js"></script>
   </head>
   <body>
     <div id="unity-container">
@@ -109,6 +110,13 @@
       };
       document.body.appendChild(script);
 
+      const { initDataR } = TelegramAppsSDK.retrieveLaunchParams();
+
+      const launchParams = TelegramAppsSDK.retrieveLaunchParams();
+
+// Извлекаем initData
+      const { iD, iDR } = launchParams;
+
         function getTelegramInitData() {
           unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', window.Telegram + " " + window.Telegram.WebApp);
     if (window.Telegram && window.Telegram.WebApp) {
@@ -157,7 +165,8 @@ function onTelegramAuth(user) {
 }
       function callEverySecond() {
     console.log("Этот метод вызывается каждую секунду!");
-        getTelegramInitData();
+        //getTelegramInitData();
+        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', id);
 }
 
 // Запускаем метод каждую секунду
