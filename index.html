@@ -89,7 +89,7 @@
                         const initData = window.Telegram.WebApp.initData || '';
                         
                         // Send to Unity
-                        unityInstance.SendMessage('TelegramManager', 'ReceiveInitData', initData);
+                        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initData);
                         
                         // Expand the WebApp to full view (optional)
                         window.Telegram.WebApp.expand();
@@ -100,7 +100,7 @@
                         console.log("Not running in Telegram WebApp - sending test data");
                         // For testing outside Telegram
                         const testInitData = "query_id=test123&user=%7B%22id%22%3A12345%2C%22first_name%22%3A%22Test%22%7D";
-                        unityInstance.SendMessage('TelegramManager', 'ReceiveInitData', testInitData);
+                        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', testInitData);
                     }
                 }).catch((message) => {
                     alert(message);
