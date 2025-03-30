@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div id="unity-container">
@@ -19,24 +20,7 @@
         </div>
         <div id="unity-warning"> </div>
     </div>
-
-    <!-- Кнопка Telegram Login Widget -->
-    <div id="telegram-login-button" style="margin-top: 20px; text-align: center;">
-        <script async src="https://telegram.org/js/telegram-widget.js?22"
-            data-telegram-login="zootopia_IPKarimov_bot"
-            data-size="large"
-            data-onauth="onTelegramAuth(user)"
-            data-request-access="write">
-        </script>
-    </div>
-
-    <!-- Используем type="module" для работы с import -->
-    <script type="module">
-        // Импортируем функции из @telegram-apps/sdk
-        import { retrieveLaunchParams } from 'https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js';
-
-        var unityInstance = null;
-
+    <script>
         window.addEventListener("load", function () {
             if ("serviceWorker" in navigator) {
                 navigator.serviceWorker.register("ServiceWorker.js");
@@ -48,7 +32,7 @@
             var progressBarFull = document.querySelector("#unity-progress-bar-full");
             var warningBanner = document.querySelector("#unity-warning");
 
-            // Показывает временное сообщение (banner/ribbon) или постоянное сообщение об ошибке
+            // Shows a temporary message banner/ribbon or a permanent error message
             function unityShowBanner(msg, type) {
                 function updateBannerVisibility() {
                     warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -98,93 +82,32 @@
                 }).then((instance) => {
                     unityInstance = instance;
                     loadingBar.style.display = "none";
+                    
+                    // Telegram WebApp initialization
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        // Get initData (URL-encoded string)
+                        const initData = window.Telegram.WebApp.initData || '';
+                        
+                        // Send to Unity
+                        unityInstance.SendMessage('TelegramManager', 'ReceiveInitData', initData);
+                        
+                        // Expand the WebApp to full view (optional)
+                        window.Telegram.WebApp.expand();
+                        
+                        // For debugging
+                        console.log("Sent initData to Unity:", initData);
+                    } else {
+                        console.log("Not running in Telegram WebApp - sending test data");
+                        // For testing outside Telegram
+                        const testInitData = "query_id=test123&user=%7B%22id%22%3A12345%2C%22first_name%22%3A%22Test%22%7D";
+                        unityInstance.SendMessage('TelegramManager', 'ReceiveInitData', testInitData);
+                    }
                 }).catch((message) => {
                     alert(message);
                 });
             };
             document.body.appendChild(script);
         });
-
-        // Функция для авторизации через Telegram WebApp
-        function Auth() {
-            if (window.TelegramAppsSDK) {
-                console.log("TelegramAppsSDK is available.");
-
-                // Получаем параметры запуска
-                const launchParams = retrieveLaunchParams();
-                console.log("Launch Params:", launchParams);
-
-                // Извлекаем initData
-                const { initData, initDataRaw } = launchParams;
-                console.log("InitData:", initData);
-                console.log("InitDataRaw:", initDataRaw);
-
-                // Уведомляем Telegram, что приложение готово
-                if (window.Telegram && window.Telegram.WebApp) {
-                    Telegram.WebApp.ready();
-                }
-
-                // Разворачиваем Mini App на весь экран
-                if (window.Telegram && window.Telegram.WebApp) {
-                    Telegram.WebApp.expand();
-                }
-
-                // Пример: Отправляем initData в Unity
-                if (unityInstance) {
-                    unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', JSON.stringify({ initData }));
-                }
-            } else {
-                console.error("TelegramAppsSDK is not available.");
-            }
-        }
-
-        // Функция для получения initData
-        function getTelegramInitData() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const initData = window.Telegram.WebApp.initData;
-                if (initData) {
-                    return initData;
-                } else {
-                    console.warn("Telegram WebApp initData is empty");
-                    return null;
-                }
-            } else {
-                console.warn("Telegram WebApp API недоступен");
-                return null;
-            }
-        }
-
-        // Функция для отправки initData в Unity
-        function sendInitDataToUnity() {
-            if (!unityInstance) {
-                console.warn("Unity instance is not initialized yet.");
-                return;
-            }
-
-            const initData = getTelegramInitData();
-            if (initData) {
-                unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initData);
-            } else {
-                console.warn("Не удалось получить initData");
-                Auth();
-            }
-        }
-
-        // Вызов метода каждую секунду
-        function callEverySecond() {
-            console.log("Этот метод вызывается каждую секунду!");
-            if (unityInstance) {
-                getTelegramInitData();
-            }
-        }
-
-        const intervalId = setInterval(callEverySecond, 1000);
-
-        // Останавливаем выполнение через 50 секунд
-        setTimeout(() => {
-            clearInterval(intervalId);
-            console.log("Метод больше не вызывается.");
-        }, 50000);
     </script>
 </body>
 </html>
