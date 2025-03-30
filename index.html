@@ -7,7 +7,6 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
-    <script src="https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js"></script>
   </head>
   <body>
     <div id="unity-container">
@@ -28,6 +27,33 @@
             data-request-access="write">
         </script>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js"></script>
+    <script>
+        // Проверяем, доступен ли TelegramAppsSDK
+        if (window.TelegramAppsSDK) {
+            console.log("TelegramAppsSDK is available.");
+        else console.log("POSOSI);
+
+            // Получаем параметры запуска
+            const launchParams = TelegramAppsSDK.retrieveLaunchParams();
+            console.log("Launch Params:", launchParams);
+
+            // Извлекаем initData
+            const { initData, initDataRaw } = launchParams;
+            console.log("InitData:", initData);
+            console.log("InitDataRaw:", initDataRaw);
+
+            // Уведомляем Telegram, что приложение готово
+            TelegramAppsSDK.ready();
+
+            // Разворачиваем Mini App на весь экран
+            TelegramAppsSDK.expand();
+
+            // Пример: Отправляем initData на сервер
+            console.warn(JSON.stringify({ initData }));
+    </script>
+</body>
+
     <script type = "module">
       var unityInstance = null;
       window.addEventListener("load", function () {
@@ -103,12 +129,6 @@
       };
       document.body.appendChild(script);
 
-      
-        import { retrieveLaunchParams } from 'https:/cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js'
-
-        // Получаем initDataRaw
-        const { initDataRaw } = retrieveLaunchParams();
-
         function getTelegramInitData() {
           unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', window.Telegram + " " + window.Telegram.WebApp);
     if (window.Telegram && window.Telegram.WebApp) {
@@ -159,7 +179,7 @@ function onTelegramAuth(user) {
     console.log("Этот метод вызывается каждую секунду!");
         //getTelegramInitData();
         
-        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initDataRaw);
+        unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', );
 }
 
 // Запускаем метод каждую секунду
