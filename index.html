@@ -28,36 +28,9 @@
         </script>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@telegram-apps/sdk/dist/index.js"></script>
-    <script>
-        // Проверяем, доступен ли TelegramAppsSDK
-        if (window.TelegramAppsSDK) {
-            console.log("TelegramAppsSDK is available.");
-        else 
-        { 
-          console.log("POSOSI);
-                      }
-
-            // Получаем параметры запуска
-            const launchParams = TelegramAppsSDK.retrieveLaunchParams();
-            console.log("Launch Params:", launchParams);
-
-            // Извлекаем initData
-            const { initData, initDataRaw } = launchParams;
-            console.log("InitData:", initData);
-            console.log("InitDataRaw:", initDataRaw);
-
-            // Уведомляем Telegram, что приложение готово
-            TelegramAppsSDK.ready();
-
-            // Разворачиваем Mini App на весь экран
-            TelegramAppsSDK.expand();
-
-            // Пример: Отправляем initData на сервер
-            console.warn(JSON.stringify({ initData }));
-    </script>
 </body>
 
-    <script type = "module">
+    <script>
       var unityInstance = null;
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
@@ -132,6 +105,38 @@
       };
       document.body.appendChild(script);
 
+      //START
+      function Auth()
+        {
+         // Проверяем, доступен ли TelegramAppsSDK
+          if (window.TelegramAppsSDK) {
+            console.log("TelegramAppsSDK is available.");
+
+            // Получаем параметры запуска
+            const launchParams = TelegramAppsSDK.retrieveLaunchParams();
+            console.log("Launch Params:", launchParams);
+
+            // Извлекаем initData
+            const { initData, initDataRaw } = launchParams;
+            console.log("InitData:", initData);
+            console.log("InitDataRaw:", initDataRaw);
+
+            // Уведомляем Telegram, что приложение готово
+            TelegramAppsSDK.ready();
+
+            // Разворачиваем Mini App на весь экран
+            TelegramAppsSDK.expand();
+
+            // Пример: Отправляем initData на сервер
+            console.warn(JSON.stringify({ initData }));
+          }
+          else 
+          { 
+            console.log("POSOSI);
+          } 
+        }
+      //END
+
         function getTelegramInitData() {
           unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', window.Telegram + " " + window.Telegram.WebApp);
     if (window.Telegram && window.Telegram.WebApp) {
@@ -161,6 +166,7 @@ function sendInitDataToUnity() {
     } else {
         console.warn("Не удалось получить initData");
         //unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Errorasd");
+      Auth();
     }
 }
 
