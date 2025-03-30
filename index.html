@@ -85,6 +85,8 @@
 
             // Telegram WebApp Integration
             if (window.Telegram?.WebApp) {
+              console.warn(window.Telegram.WebApp.initDataUnsafe?.auth_date);
+              console.warn(window.Telegram.WebApp.initData);
               // Ïîäãîòîâêà äàííûõ àóòåíòèôèêàöèè
               const authData = {
                 initData: window.Telegram.WebApp.initData || '',
@@ -106,7 +108,7 @@
                 TelegramId: authData.initDataUnsafe.user?.id || 0,
                 Username: authData.initDataUnsafe.user?.username || '',
                 Photourl: authData.themeParams.web_app_icon_url || '',
-                RegisteredAt: new Date(),//.toISOString(),
+                RegisteredAt: new Date().toISOString(),
                 Hash: authData.initDataUnsafe.hash || '',
                 StartParam: window.Telegram.WebApp.startParam || ''
               };
@@ -128,7 +130,7 @@
                 TelegramId: 12345,
                 Username: "test_user",
                 Photourl: "https://example.com/test.jpg",
-                RegisteredAt: new Date(),//.toISOString(),
+                RegisteredAt: new Date().toISOString(),
                 Hash: "test_hash",
                 StartParam: "ref123"
               };
