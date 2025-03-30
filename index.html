@@ -128,7 +128,7 @@
 
 function sendInitDataToUnity() {
     if (!unityInstance) {
-        console.error("Unity instance is not initialized yet.");
+        console.warn("Unity instance is not initialized yet.");
         return;
     }
 
@@ -136,7 +136,7 @@ function sendInitDataToUnity() {
     if (initData) {
         unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', initData);
     } else {
-        console.error("Не удалось получить initData");
+        console.warn("Не удалось получить initData");
         //unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', "Errorasd");
     }
 }
@@ -155,6 +155,19 @@ function onTelegramAuth(user) {
     const userData = JSON.stringify(user);
     unityInstance.SendMessage('TelegramManager', 'OnReceiveInitData', userData);
 }
+      function callEverySecond() {
+    console.log("Этот метод вызывается каждую секунду!");
+        getTelegramInitData();
+}
+
+// Запускаем метод каждую секунду
+const intervalId = setInterval(callEverySecond, 1000);
+
+// Останавливаем выполнение через 5 секунд
+setTimeout(() => {
+    clearInterval(intervalId);
+    console.log("Метод больше не вызывается.");
+}, 5000);
     </script>
   </body>
 </html>
