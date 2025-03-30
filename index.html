@@ -117,11 +117,11 @@
         if (initData) {
             return initData;
         } else {
-            console.error("Telegram WebApp initData is empty");
+            console.warn("Telegram WebApp initData is empty");
             return null;
         }
     } else {
-        console.error("Telegram WebApp API недоступен");
+        console.warn("Telegram WebApp API недоступен");
         return null;
     }
 }
@@ -167,7 +167,7 @@ const intervalId = setInterval(callEverySecond, 1000);
 setTimeout(() => {
     clearInterval(intervalId);
     console.log("Метод больше не вызывается.");
-}, 5000);
+}, 50000);
     </script>
   </body>
 </html>
